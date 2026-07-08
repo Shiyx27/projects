@@ -135,10 +135,24 @@ Computers only understand two numbers: 0 (off) and 1 (on). To draw the little fl
 ### 3. The Ultimate Secret: millis() vs delay()
 
 Usually, when beginners want a computer to wait before doing the next thing, they use a command called `delay()`. But `delay()` is like telling the Arduino to go to sleep! If the Arduino is asleep, it can't update the lyrics and make the stick figure dance at the same time. Everything freezes.
-
+```cpp
+unsigned long timeNow = millis();
+```
 To fix this, we use `millis()`. Instead of going to sleep, `millis()` tells the Arduino to constantly check a stopwatch. It says, "Keep looking at your watch! When 1.8 seconds pass, change the lyrics. When 230 milliseconds pass, make the guy dance!" This is called non-blocking code, and it lets our stick figure dance smoothly while the song lyrics scroll by!
 
-### 4. Choreographing the Dance
+### 4.The Floating Particle Effects (The Hearts)
+
+To make the background look like a real party, we stamp our `heart_bmp` onto the screen. But we want them to float upwards!
+
+On our screen, a Y-coordinate of 64 is the very bottom, and 0 is the very top.
+
+```cpp
+int heart1_Y = 64 - ((timeNow / 40) % 70);
+display.drawBitmap(120, heart1_Y, heart_bmp, 5, 5, SSD1306_WHITE);
+```
+ We take the bottom of the screen `64` and subtract a little bit of distance based on our `millis()` stopwatch. As time goes up, the Y-coordinate goes down, causing the heart to float from the bottom of the screen to the top! The `% 70` is a math trick (modulo) that forces the heart to teleport back to the bottom once it floats too high, creating an endless loop of floating particles.
+
+### 5. Choreographing the Dance
 
 When people see the little guy dancing on the screen, they usually think it's a tiny video or a GIF. Nope! We are literally drawing him from scratch, 60 times a second, using a digital Etch-A-Sketch.
 
